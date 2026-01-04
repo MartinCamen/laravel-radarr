@@ -2,8 +2,7 @@
 
 namespace MartinCamen\LaravelRadarr;
 
-use MartinCamen\ArrCore\Client\RestClientInterface;
-use MartinCamen\LaravelRadarr\Client\LaravelRestClient;
+use MartinCamen\LaravelRadarr\Client\LaravelRadarrRestClient;
 use MartinCamen\Radarr\Client\RadarrApiClient as RadarrApi;
 use MartinCamen\Radarr\Config\RadarrConfiguration;
 use MartinCamen\Radarr\Radarr;
@@ -27,8 +26,8 @@ class RadarrServiceProvider extends PackageServiceProvider
         );
 
         $this->app->singleton(
-            RestClientInterface::class,
-            fn($app): RestClientInterface => new LaravelRestClient($app->make(RadarrConfiguration::class)),
+            LaravelRadarrRestClient::class,
+            fn($app): LaravelRadarrRestClient => new LaravelRadarrRestClient($app->make(RadarrConfiguration::class)),
         );
 
         // Internal API client - not exposed via facade
@@ -42,7 +41,7 @@ class RadarrServiceProvider extends PackageServiceProvider
                 useHttps: $config->useHttps,
                 timeout: $config->timeout,
                 urlBase: $config->urlBase,
-                restClient: $app->make(RestClientInterface::class),
+                restClient: $app->make(LaravelRadarrRestClient::class),
             );
         });
 
