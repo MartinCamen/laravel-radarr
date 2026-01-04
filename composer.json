@@ -1,0 +1,79 @@
+{
+  "name": "martincamen/laravel-radarr",
+  "description": "Laravel integration for Radarr PHP SDK",
+  "keywords": [
+    "radarr",
+    "movies",
+    "api",
+    "sdk",
+    "laravel",
+    "media-server"
+  ],
+  "homepage": "https://github.com/martincamen/laravel-radarr",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Martin Camen",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.3",
+    "driftingly/rector-laravel": "^2.1.9",
+    "illuminate/http": "^10.0|^11.0|^12.0",
+    "illuminate/support": "^10.0|^11.0|^12.0",
+    "martincamen/radarr-php": "^0.0.7",
+    "spatie/laravel-package-tools": "^1.16"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.0",
+    "larastan/larastan": "^3.0",
+    "orchestra/testbench": "^9.0|^10.0",
+    "pestphp/pest": "^3.0",
+    "pestphp/pest-plugin-laravel": "^3.0",
+    "roave/security-advisories": "dev-latest"
+  },
+  "autoload": {
+    "psr-4": {
+      "MartinCamen\\LaravelRadarr\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MartinCamen\\LaravelRadarr\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "pint": "vendor/bin/pint --test",
+    "pint-fix": "vendor/bin/pint",
+    "analyse": "vendor/bin/phpstan analyse",
+    "test": "vendor/bin/pest",
+    "rector": "vendor/bin/rector process --dry-run",
+    "rector-fix": "vendor/bin/rector process",
+    "check": [
+      "@analyse",
+      "@test",
+      "@pint",
+      "@rector"
+    ]
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "phpstan/extension-installer": true
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "MartinCamen\\LaravelRadarr\\RadarrServiceProvider"
+      ],
+      "aliases": {
+        "Radarr": "MartinCamen\\LaravelRadarr\\Facades\\Radarr"
+      }
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
