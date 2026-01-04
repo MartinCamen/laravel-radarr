@@ -22,7 +22,7 @@
     "driftingly/rector-laravel": "^2.1.9",
     "illuminate/http": "^10.0|^11.0|^12.0",
     "illuminate/support": "^10.0|^11.0|^12.0",
-    "martincamen/radarr-php": "^0.0.7",
+    "martincamen/radarr-php": "^0.0.8",
     "spatie/laravel-package-tools": "^1.16"
   },
   "require-dev": {
@@ -44,12 +44,12 @@
     }
   },
   "scripts": {
-    "pint": "vendor/bin/pint --test",
-    "pint-fix": "vendor/bin/pint",
-    "analyse": "vendor/bin/phpstan analyse",
-    "test": "vendor/bin/pest",
-    "rector": "vendor/bin/rector process --dry-run",
-    "rector-fix": "vendor/bin/rector process",
+    "pint": "./vendor/bin/pint --test",
+    "pint-fix": "./vendor/bin/pint",
+    "analyse": "./vendor/bin/phpstan analyse",
+    "test": "./vendor/bin/pest",
+    "rector": "./vendor/bin/rector process --dry-run",
+    "rector-fix": "./vendor/bin/rector process",
     "check": [
       "@analyse",
       "@test",
@@ -74,6 +74,6 @@
       }
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true
 }

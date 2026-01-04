@@ -6,6 +6,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use InvalidArgumentException;
 use MartinCamen\ArrCore\Client\RestClientInterface;
 use MartinCamen\ArrCore\Contract\Endpoint;
 use MartinCamen\ArrCore\Exceptions\AuthenticationException;
@@ -101,7 +102,7 @@ class LaravelRestClient implements RestClientInterface
                 'POST'   => $request->post($url, $body),
                 'PUT'    => $request->put($url, $body),
                 'DELETE' => $request->delete($url, $query),
-                default  => throw new \InvalidArgumentException("Unsupported HTTP method: {$method}"),
+                default  => throw new InvalidArgumentException("Unsupported HTTP method: {$method}"),
             };
 
             $response->throw();
@@ -124,10 +125,10 @@ class LaravelRestClient implements RestClientInterface
             $responseBody = $e->response->json();
 
             return match ($status) {
-                401 => throw AuthenticationException::invalidApiKey(),
-                404 => throw NotFoundException::resourceNotFound($endpoint->path($pathParams)),
+                401      => throw AuthenticationException::invalidApiKey(),
+                404      => throw NotFoundException::resourceNotFound($endpoint->path($pathParams)),
                 400, 422 => throw ValidationException::fromResponse($responseBody),
-                default => throw RadarrConnectionException::failed(
+                default  => throw RadarrConnectionException::failed(
                     $this->config->host,
                     $this->config->port,
                     $e->getMessage(),
