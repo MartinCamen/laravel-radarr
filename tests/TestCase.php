@@ -2,6 +2,7 @@
 
 namespace MartinCamen\LaravelRadarr\Tests;
 
+use MartinCamen\LaravelRadarr\Facades\Radarr;
 use MartinCamen\LaravelRadarr\RadarrServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -17,7 +18,7 @@ class TestCase extends Orchestra
     protected function getPackageAliases($app): array
     {
         return [
-            'Radarr' => \MartinCamen\LaravelRadarr\Facades\Radarr::class,
+            'Radarr' => Radarr::class,
         ];
     }
 
