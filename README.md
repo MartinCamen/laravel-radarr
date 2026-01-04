@@ -77,20 +77,18 @@ $status = Radarr::systemSummary();
 
 ### Dependency Injection
 
-You can also inject the `RadarrClient` directly:
+You can also inject `Radarr` directly:
 
 ```php
-use MartinCamen\Radarr\SDK\RadarrClient;
+use MartinCamen\LaravelRadarr\Facades\Radarr;
 
 class MovieController
 {
-    public function __construct(private RadarrClient $radarr) {}
+    public function __construct(private Radarr $radarr) {}
 
     public function index()
     {
-        $movies = $this->radarr->movies();
-
-        return view('movies.index', ['movies' => $movies]);
+        return view('movies.index', ['movies' => $this->radarr->movies()]);
     }
 }
 ```
@@ -101,7 +99,9 @@ The `downloads()` method returns a `DownloadItemCollection` containing all activ
 
 ```php
 use MartinCamen\LaravelRadarr\Facades\Radarr;
+use MartinCamen\ArrCore\Domain\Download\DownloadItemCollection;
 
+/** @var DownloadItemCollection $downloads */
 $downloads = Radarr::downloads();
 
 // Check if there are any downloads
@@ -137,8 +137,10 @@ The `movies()` method returns an array of `Movie` domain objects:
 
 ```php
 use MartinCamen\LaravelRadarr\Facades\Radarr;
+use MartinCamen\ArrCore\Domain\Media\Movie;
 
 // Get all movies
+/** @var Movie[] $movies */
 $movies = Radarr::movies();
 
 foreach ($movies as $movie) {

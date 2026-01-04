@@ -20,7 +20,7 @@ use MartinCamen\Radarr\Config\RadarrConfiguration;
  *
  * @link https://radarr.video/docs/api/
  */
-class LaravelRestClient implements RestClientInterface
+class LaravelRadarrRestClient implements RestClientInterface
 {
     public function __construct(protected RadarrConfiguration $config) {}
 
