@@ -2,6 +2,9 @@
 
 Laravel integration for the [Radarr PHP SDK](https://github.com/martincamen/radarr-php), providing a seamless experience for interacting with Radarr using unified domain models from [php-arr-core](https://github.com/martincamen/php-arr-core).
 
+Also available:
+- [Laravel Sonarr integration](https://github.com/martincamen/laravel-sonarr)
+
 ## Features
 
 - Unified API using canonical domain models from `php-arr-core`
@@ -168,10 +171,11 @@ $movie = Radarr::movie(1);
 echo $movie->title;
 ```
 
-
 ## System information
 
 ```php
+use MartinCamen\LaravelRadarr\Facades\Radarr;
+
 // Get system status information
 $system = Radarr::system()->status();
 
@@ -199,7 +203,7 @@ Radarr::system()->backups();
 
 ## System summary
 
-The `systemSummary()` method returns a `SystemStatus` object with combined status information and health information:
+The `systemSummary()` method returns a `SystemSummary` object with combined status information and health information:
 
 ```php
 use MartinCamen\LaravelRadarr\Facades\Radarr;
@@ -230,13 +234,13 @@ echo "Uptime: {$status->uptime()}";
 
 All responses use canonical domain models from `php-arr-core`, providing a unified interface across all *arr services:
 
-| Model | Description |
-|-------|-------------|
-| `DownloadItemCollection` | Collection of active downloads |
-| `DownloadItem` | Individual download with status, progress, size |
-| `Movie` | Movie with metadata, status, and file information |
-| `SystemStatus` | System status with health issues |
-| `HealthIssue` | Individual health check issue |
+| Model                    | Description                                       |
+|--------------------------|---------------------------------------------------|
+| `DownloadItemCollection` | Collection of active downloads                    |
+| `DownloadItem`           | Individual download with status, progress, size   |
+| `Movie`                  | Movie with metadata, status, and file information |
+| `SystemSummary`          | System summary (status & health issues)           |
+| `HealthIssue`            | Individual health check issue                     |
 
 ### Value Objects
 
@@ -353,7 +357,7 @@ public function testWithCustomDownloads(): void
 public function testWithCustomSystemStatus(): void
 {
     Radarr::fake([
-        'systemStatus'     => SystemStatusFactory::make([
+        'systemSummary'     => SystemStatusFactory::make([
             'version'      => '5.0.0.0',
             'isProduction' => true,
         ]),
@@ -370,6 +374,8 @@ public function testWithCustomSystemStatus(): void
 The fake provides several assertion methods:
 
 ```php
+use MartinCamen\LaravelRadarr\Facades\Radarr;
+
 $fake = Radarr::fake();
 
 // Assert a method was called
@@ -395,13 +401,14 @@ $calls = $fake->getCalls();
 
 ```php
 use MartinCamen\LaravelRadarr\Facades\Radarr;
+use MartinCamen\ArrCore\Domain\Media\Movie;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         // Get system status
-        $status = Radarr::systemStatus();
+        $status = Radarr::systemSummary();
 
         // Get active downloads
         $downloads = Radarr::downloads();
@@ -412,7 +419,7 @@ class DashboardController extends Controller
         // Filter movies for display
         $missingMovies = array_filter(
             $movies,
-            fn ($movie) => $movie->isDownloadable(),
+            fn(Movie $movie) => $movie->isDownloadable(),
         );
 
         return view('dashboard', [
